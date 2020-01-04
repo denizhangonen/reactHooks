@@ -8,28 +8,33 @@ const Search = React.memo(props => {
   const [enteredFilter, setEnteredFilter] = useState("");
 
   useEffect(() => {
-    const query =
-      enteredFilter.length === 0
-        ? ""
-        : `?orderBy="title"&equalTo="${enteredFilter}"`;
+    const timer = setTimeout(() => {
+      const query =
+        enteredFilter.length === 0
+          ? ""
+          : `?orderBy="title"&equalTo="${enteredFilter}"`;
 
-    fetch("https://react-hooks-b3c78.firebaseio.com/ingredients.json" + query)
-      .then(response => {
-        console.log(response);
-        return response.json();
-      })
-      .then(responseData => {
-        console.log(responseData);
-        const loadedIngredients = [];
-        for (const key in responseData) {
-          loadedIngredients.push({
-            id: key,
-            title: responseData[key].title,
-            amount: responseData[key].amount
-          });
-        }
-        onLoadIngredients(loadedIngredients);
-      });
+      fetch("https://react-hooks-b3c78.firebaseio.com/ingredients.json" + query)
+        .then(response => {
+          console.log(response);
+          return response.json();
+        })
+        .then(responseData => {
+          console.log(responseData);
+          const loadedIngredients = [];
+          for (const key in responseData) {
+            loadedIngredients.push({
+              id: key,
+              title: responseData[key].title,
+              amount: responseData[key].amount
+            });
+          }
+          onLoadIngredients(loadedIngredients);
+        });
+    }, 500);
+    return () => {
+      clearTimeout(timer);
+    };
   }, [enteredFilter, onLoadIngredients]);
 
   return (
