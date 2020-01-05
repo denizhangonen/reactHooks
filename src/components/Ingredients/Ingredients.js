@@ -6,14 +6,17 @@ import IngredientList from "./IngredientList";
 
 const Ingredients = () => {
   const [userIngredients, setUserIngredients] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const addIngredientHandler = ingredient => {
+    setIsLoading(true);
     fetch("https://react-hooks-b3c78.firebaseio.com/ingredients.json", {
       method: "POST",
       body: JSON.stringify(ingredient),
       headers: { "Content-Type": "application/json" }
     })
       .then(response => {
+        setIsLoading(false);
         return response.json();
       })
       .then(responseData => {
@@ -25,10 +28,12 @@ const Ingredients = () => {
   };
 
   const removeIngredientHandler = id => {
+    setIsLoading(true);
     fetch(`https://react-hooks-b3c78.firebaseio.com/ingredients/${id}.json`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" }
     }).then(() => {
+      setIsLoading(false);
       setUserIngredients(prevIngredients =>
         prevIngredients.filter(i => i.id.toString() !== id.toString())
       );
@@ -41,7 +46,10 @@ const Ingredients = () => {
 
   return (
     <div className="App">
-      <IngredientForm onAddIngredient={addIngredientHandler} />
+      <IngredientForm
+        onAddIngredient={addIngredientHandler}
+        isLoading={isLoading}
+      />
 
       <IngredientList
         ingredients={userIngredients}
