@@ -3,10 +3,12 @@ import React, { useState, useEffect, useCallback } from "react";
 import IngredientForm from "./IngredientForm";
 import Search from "./Search";
 import IngredientList from "./IngredientList";
+import ErrorModal from "../UI/ErrorModal";
 
 const Ingredients = () => {
   const [userIngredients, setUserIngredients] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
 
   const addIngredientHandler = ingredient => {
     setIsLoading(true);
@@ -32,20 +34,30 @@ const Ingredients = () => {
     fetch(`https://react-hooks-b3c78.firebaseio.com/ingredients/${id}.json`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" }
-    }).then(() => {
-      setIsLoading(false);
-      setUserIngredients(prevIngredients =>
-        prevIngredients.filter(i => i.id.toString() !== id.toString())
-      );
-    });
+    })
+      .then(() => {
+        setIsLoading(false);
+        setUserIngredients(prevIngredients =>
+          prevIngredients.filter(i => i.id.toString() !== id.toString())
+        );
+      })
+      .catch(error => {
+        setError("Something Went Wrong: " + error.message);
+      });
   };
 
   const filteredIngredientsHandler = useCallback(ingredients => {
     setUserIngredients(ingredients);
   }, []);
 
+  const removeError = () => {
+    setError(null);
+    setIsLoading(false);
+  };
+
   return (
     <div className="App">
+      {error && <ErrorModal onClose={removeError}>{error}</ErrorModal>}
       <IngredientForm
         onAddIngredient={addIngredientHandler}
         isLoading={isLoading}
