@@ -43,6 +43,7 @@ const Ingredients = () => {
       })
       .catch(error => {
         setError("Something Went Wrong: " + error.message);
+        setIsLoading(false);
       });
   };
 
@@ -52,7 +53,6 @@ const Ingredients = () => {
 
   const removeError = () => {
     setError(null);
-    setIsLoading(false);
   };
 
   return (
