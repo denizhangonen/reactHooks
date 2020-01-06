@@ -29,7 +29,8 @@ const Ingredients = () => {
     data,
     sendRequest,
     reqExtra,
-    reqIdentifier
+    reqIdentifier,
+    clear
   } = useHttp();
 
   useEffect(() => {
@@ -43,15 +44,18 @@ const Ingredients = () => {
     }
   }, [data, reqExtra, reqIdentifier, isLoading, error]);
 
-  const addIngredientHandler = useCallback(ingredient => {
-    sendRequest(
-      "https://react-hooks-b3c78.firebaseio.com/ingredients.json",
-      "POST",
-      JSON.stringify(ingredient),
-      ingredient,
-      "ADD_INGREDIENT"
-    );
-  }, []);
+  const addIngredientHandler = useCallback(
+    ingredient => {
+      sendRequest(
+        "https://react-hooks-b3c78.firebaseio.com/ingredients.json",
+        "POST",
+        JSON.stringify(ingredient),
+        ingredient,
+        "ADD_INGREDIENT"
+      );
+    },
+    [sendRequest]
+  );
 
   const removeIngredientHandler = useCallback(
     id => {
@@ -66,12 +70,8 @@ const Ingredients = () => {
     [sendRequest]
   );
 
-  const filteredIngredientsHandler = useCallback(ingredients => {    
+  const filteredIngredientsHandler = useCallback(ingredients => {
     dispatch({ type: "SET", ingredients: ingredients });
-  }, []);
-
-  const removeError = useCallback(() => {
-    // dispatchHttp({ type: "CLEAR" });
   }, []);
 
   const ingredientList = useMemo(() => {
@@ -85,7 +85,7 @@ const Ingredients = () => {
 
   return (
     <div className="App">
-      {error && <ErrorModal onClose={removeError}>{error}</ErrorModal>}
+      {error && <ErrorModal onClose={clear}>{error}</ErrorModal>}
       <IngredientForm
         onAddIngredient={addIngredientHandler}
         isLoading={isLoading}
