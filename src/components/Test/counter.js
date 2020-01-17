@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import Timer from "./timer/timer";
+
 import {
   Switch,
   Route,
@@ -28,6 +30,7 @@ const Counter = () => {
   return (
     <Router>
       <div>
+        <Timer clickAmount={userCounter} />
         <p>You clicked {userCounter} times.</p>
         <button onClick={() => setUserCounter(userCounter + 1)}>
           Click Me!
