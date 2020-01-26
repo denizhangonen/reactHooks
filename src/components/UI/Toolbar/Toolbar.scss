@@ -1,0 +1,104 @@
+$colors:(bg: #E0E0E0, text: #444, anchorMain: #eee, anchorActive:#40A4C8);
+
+.toolbar {
+    height: 56px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: map-get($colors, bg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+    z-index: 90;
+
+    nav {
+        height: 100%;
+    }
+}
+
+.navigationItems {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    height: 100%;
+}
+
+.navigationItem {
+    margin: 10px 0;
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+
+    a {
+        color: map-get($colors, anchorMain);
+        text-decoration: none;
+        width: 100%;
+        box-sizing: border-box;
+        display: block;
+
+        @media (min-width: 500px) {
+            color: map-get($map: $colors, $key:text);
+            height: 100%;
+            padding: 16px 10px;
+            border-bottom: 4px solid transparent;
+        }
+    }
+
+    a:hover,
+    a:active,
+    a.active {
+        color: map-get($colors, anchorActive);
+
+        @media (min-width: 500px) {
+
+            background-color: map-get($colors, anchorMain);
+            border-bottom: 4px solid map-get($colors, anchorActive);
+            color: map-get($colors, text);
+
+        }
+    }
+
+    @media (min-width: 500px) {
+        margin: 0;
+        display: flex;
+        height: 100%;
+        width: auto;
+        align-items: center;
+    }
+}
+
+.desktopOnly {
+    @media (max-width: 500px) {
+        display: none;
+    }
+}
+
+.drawer-toggle {
+    width: 40px;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+    cursor: pointer;
+    box-sizing: border-box;
+
+    @media (min-width:501px) {
+        display: none;
+    }
+
+    div {
+        width: 90%;
+        height: 5px;
+        background-color: #fff;
+    }
+
+
+}
